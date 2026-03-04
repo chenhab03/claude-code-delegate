@@ -1,0 +1,27 @@
+{
+  "name": "claude-code-delegate",
+  "version": "0.1.0",
+  "description": "Delegate programming tasks to local Claude Code CLI, giving your OpenClaw agent professional-grade coding ability.",
+  "author": "chenhab03",
+  "license": "MIT",
+  "homepage": "https://github.com/chenhab03/claude-code-delegate",
+  "keywords": [
+    "claude-code",
+    "programming",
+    "coding",
+    "delegate",
+    "cli",
+    "developer"
+  ],
+  "openclaw": {
+    "minVersion": "2025.1.0",
+    "emoji": "🔧",
+    "category": "tools",
+    "files": {
+      "skill": "SKILL.md",
+      "references": [
+        "PERSONA.md"
+      ]
+    }
+  }
+}
