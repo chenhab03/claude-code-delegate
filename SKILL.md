@@ -10,6 +10,17 @@ Delegate programming tasks to local Claude Code CLI.
 
 **RULE: You NEVER write code directly. ALL programming goes through `claude -p`.**
 
+## Prerequisites Check (Run Before First Use)
+
+Before delegating any task, verify the environment is ready:
+
+1. **Claude Code CLI installed**: Run `which claude` — if not found, tell user: `npm install -g @anthropic-ai/claude-code`
+2. **API key configured**: Run `claude --version` — if it errors about auth, tell user to run `claude` and complete login
+3. **Write-guard active (STRONGLY RECOMMENDED)**: Check if a write-guard plugin exists at `.openclaw/extensions/write-guard/`. If not, warn the user:
+   > ⚠️ No write-guard detected. The delegate uses `--permission-mode bypassPermissions` which grants full filesystem read/write access. It is strongly recommended to set up a write-guard plugin before running tasks. See README.md for setup instructions.
+
+Only proceed with delegation after items 1 and 2 pass. Item 3 is a warning — the user may choose to proceed without it, but should be informed of the risk.
+
 ## When to Trigger
 
 Auto-trigger on ANY of these:
@@ -37,7 +48,7 @@ cd "<project_dir>" && claude -p "<task_description>" --output-format text --max-
 | `cd "<dir>" &&` | Set working dir (no --cwd flag exists) | Yes |
 | `--output-format text` | Plain text output | Recommended |
 | `--max-turns 10` | Limit execution rounds | Recommended |
-| `--permission-mode bypassPermissions` | Auto-accept file edits | Recommended |
+| `--permission-mode bypassPermissions` | Auto-accept file edits (**requires write-guard**, see Prerequisites) | Recommended |
 | `--continue` | Resume previous session (for debugging/iteration) | When fixing bugs in same project |
 
 **FORBIDDEN: `--dangerously-skip-permissions`**
@@ -151,3 +162,11 @@ Keep technical summary concise. Do not copy the delegate's full output verbatim.
 Tell the user: "The coding task didn't finish. Want me to try again?"
 
 Retry with longer timeout or simpler task description. Only write code yourself if user explicitly says "you do it" (not recommended).
+
+## Security Best Practices
+
+1. **Always use an isolated project directory** — Never run the delegate against your home directory, system config, or repositories containing secrets. Use a dedicated `projects/` or `workplace/` directory.
+2. **Set up the write-guard plugin** — This is the most important safety measure. See README.md for the full plugin code. The write-guard blocks writes to platform config files (`.openclaw/`, `LaunchAgents/`, auth profiles) at the platform level.
+3. **Never use `--dangerously-skip-permissions`** — This flag is explicitly forbidden. `--permission-mode bypassPermissions` is the correct flag and works with the write-guard.
+4. **Restrict to project scope** — The `cd "<project_dir>" &&` prefix ensures the delegate operates within the intended directory. Never omit it.
+5. **Review delegate output** — Always relay results through the main agent. Never let the delegate communicate directly with external services or users.

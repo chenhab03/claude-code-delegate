@@ -43,8 +43,9 @@ Or manually copy the skill directory into your workspace's `skills/` folder.
   ```bash
   npm install -g @anthropic-ai/claude-code
   ```
-- Valid Anthropic API key configured for Claude Code
+- **`ANTHROPIC_API_KEY`** environment variable set, or Claude Code authenticated via `claude` login
 - [OpenClaw](https://github.com/openclaw/openclaw) agent framework
+- **Write-guard plugin (strongly recommended)** — See [Security Notes](#%EF%B8%8F-security-notes) below. This skill uses `--permission-mode bypassPermissions` which grants the delegate full filesystem access. Without a write-guard, the delegate can read/write any file on the system.
 
 ## Command Template
 
@@ -90,6 +91,8 @@ The included `PERSONA.md` is a template for giving the delegate a personality. T
 **The actual Claude Code execution is always pure technical** — personality only affects how results are presented.
 
 ## ⚠️ Security Notes
+
+> **Before using this skill**, set up the write-guard plugin below. Run the delegate in an isolated project directory first (not your home dir or system config) to observe behavior. Do not run it against repositories containing secrets or platform config until protections are in place.
 
 ### CRITICAL: Protect Platform Config Files
 

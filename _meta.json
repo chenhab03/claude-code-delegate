@@ -17,6 +17,11 @@
     "minVersion": "2025.1.0",
     "emoji": "🔧",
     "category": "tools",
+    "requires": {
+      "binaries": ["claude"],
+      "env": ["ANTHROPIC_API_KEY"],
+      "notes": "Claude Code CLI must be installed (`npm install -g @anthropic-ai/claude-code`) and authenticated. A write-guard plugin is strongly recommended before use — see README.md for setup instructions."
+    },
     "files": {
       "skill": "SKILL.md",
       "references": [
